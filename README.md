@@ -26,10 +26,10 @@ Story queue on Waffle:
 * [![Stories in Ready](https://badge.waffle.io/devsbranch/gula-backend.svg?label=ready&title=Ready)](http://waffle.io/devsbranch/gula-backend)
 * [![Stories in In Progress](https://badge.waffle.io/devsbranch/gula-backend.svg?label=in%20progress&title=In%20Progress)](http://waffle.io/devsbranch/gula-backend)
 
-[![Throughput Graph](https://graphs.waffle.io/devsbranch/gula/throughput.svg)](https://waffle.io/devsbranch/gula-backend/metrics)
+[![Throughput Graph](https://graphs.waffle.io/devsbranch/gula-backend/throughput.svg)](https://waffle.io/devsbranch/gula-backend/metrics)
 
 * Current test status master: [![Build Status](https://travis-ci.org/inasafe/inasafe.svg?branch=master)](https://travis-ci.org/inasafe/inasafe) and
-[![Code Health](https://landscape.io/github/devsbranch/gula/master/landscape.svg?style=flat)](https://landscape.io/github/devsbranch/gula/master)
+[![Code Health](https://landscape.io/github/devsbranch/gula-backend/master/landscape.svg?style=flat)](https://landscape.io/github/devsbranch/gula-backend/master)
 
 * Current test status develop: [![Build Status](https://travis-ci.org/inasafe/inasafe.svg?branch=develop)](https://travis-ci.org/inasafe/inasafe) and
 [![Code Health](https://landscape.io/github/devsbranch/gula-backend/develop/landscape.svg?style=flat)](https://landscape.io/github/devsbranch/gula-backend/develop)
