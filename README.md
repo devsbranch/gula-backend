@@ -7,7 +7,7 @@ View a running instance at [http://gula.devsbranch.com](http://gula.devsbranch.c
 Note that Gula is under development and not yet feature complete.
 
 The latest source code is available at
-[https://github.com/devsbranch/gula](https://github.com/devsbranch/gula).
+[https://github.com/devsbranch/gula](https://github.com/devsbranch/gula-backend.git).
 
 * **Developers:** See our [developer guide](README-dev.md)
 * **Designers:** See our [Moqups Project](https://app.moqups.com/alison@devsbranch.com/#) for design moqups.
@@ -23,16 +23,16 @@ The latest source code is available at
 
 Story queue on Waffle:
 
-* [![Stories in Ready](https://badge.waffle.io/devsbranch/gula.svg?label=ready&title=Ready)](http://waffle.io/devsbranch/gula)
-* [![Stories in In Progress](https://badge.waffle.io/devsbranch/gula.svg?label=in%20progress&title=In%20Progress)](http://waffle.io/devsbranch/gula)
+* [![Stories in Ready](https://badge.waffle.io/devsbranch/gula-backend.svg?label=ready&title=Ready)](http://waffle.io/devsbranch/gula-backend)
+* [![Stories in In Progress](https://badge.waffle.io/devsbranch/gula-backend.svg?label=in%20progress&title=In%20Progress)](http://waffle.io/devsbranch/gula-backend)
 
-[![Throughput Graph](https://graphs.waffle.io/devsbranch/gula/throughput.svg)](https://waffle.io/devsbranch/gula/metrics)
+[![Throughput Graph](https://graphs.waffle.io/devsbranch/gula/throughput.svg)](https://waffle.io/devsbranch/gula-backend/metrics)
 
 * Current test status master: [![Build Status](https://travis-ci.org/inasafe/inasafe.svg?branch=master)](https://travis-ci.org/inasafe/inasafe) and
 [![Code Health](https://landscape.io/github/devsbranch/gula/master/landscape.svg?style=flat)](https://landscape.io/github/devsbranch/gula/master)
 
 * Current test status develop: [![Build Status](https://travis-ci.org/inasafe/inasafe.svg?branch=develop)](https://travis-ci.org/inasafe/inasafe) and
-[![Code Health](https://landscape.io/github/devsbranch/gula/develop/landscape.svg?style=flat)](https://landscape.io/github/devsbranch/gula/develop)
+[![Code Health](https://landscape.io/github/devsbranch/gula-backend/develop/landscape.svg?style=flat)](https://landscape.io/github/devsbranch/gula-backend/develop)
 
 
 
