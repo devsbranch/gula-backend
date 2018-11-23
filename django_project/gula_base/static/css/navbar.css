@@ -1,0 +1,12 @@
+.hr-navbar {
+    background-color: #4d4e50;
+    color: white;
+    height: 70px;
+    margin-bottom:-1px !important;
+}
+
+.hr-navbar .my-2 a {
+    color: white !important;
+    text-decoration: none;
+    padding-left: 15px !important;
+}

@@ -1,0 +1,41 @@
+{% load static from staticfiles %}
+<link href="https://fonts.googleapis.com/css?family=Alegreya:400,400i,500,500i,700,700i|Roboto+Condensed:100,100i,300,300i,400,400i,500,500i,700,700i" rel="stylesheet">
+<style>
+    body {
+        padding-top: 0 !important;
+        font-family: "Roboto Condensed", sans-serif;
+    }
+    .hr-navbar {
+        font-size: 12pt;
+        padding-left: 32px !important;
+        padding-right: 32px !important;
+    }
+    .p-2 {
+        padding-right: 5px !important;
+    }
+</style>
+<div class="hr-navbar d-flex flex-column flex-md-row align-items-center p-3 px-md-4 mb-3 border-bottom">
+    <h5 class="my-0 mr-md-auto font-weight-normal">
+        <a href="/">
+            <img src="{% static "img/fbis-text-2.png" %}" width="255"/>
+        </a>
+    </h5>
+    <nav class="my-2 my-md-0 mr-md-3">
+        <a class="p-2" style="color: #aca9aa !important" title="Coming Soon">ABOUT</a>
+        <a class="p-2" href="/map">MAP</a>
+        <a class="p-2" href="/contact">CONTACT</a>
+        {% if not user.is_authenticated %}
+            <a class="p-2" href="/accounts/login">LOGIN</a>
+            <a class="p-2" href="/accounts/signup">SIGN UP</a>
+        {% else %}
+            <a class="p-2" href="/profile">PROFILE</a>
+            <a class="p-2" href="/fish/upload">UPLOAD DATA</a>
+            {% if user.is_staff or user.is_superuser %}
+                <a class="p-2" href="/admin/">ADMINISTRATION</a>
+            {% endif %}
+            <a class="p-2" href="/nonvalidated-list/">VALIDATE RECORDS</a>
+            <a class="p-2" href="/nonvalidated-user-list/">UPDATE RECORDS</a>
+            <a class="p-2" href="/accounts/logout">LOGOUT</a>
+        {% endif %}
+    </nav>
+</div>

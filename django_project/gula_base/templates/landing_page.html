@@ -1,0 +1,216 @@
+{% extends 'main_base.html' %}
+{% load static from staticfiles %}
+
+{% block subtitle %}
+    Home
+{% endblock %}
+
+{% block head %}
+
+    <!-- Custom styles for this template -->
+    <link href="{% static "css/landing_page.css" %}" rel="stylesheet">
+
+{% endblock %}
+
+{% block body_content %}
+    <div id="section-wrapper">
+        <header class="masthead text-center text-white d-flex" id="header">
+            <div id="carouselIndicators" class="carousel slide" data-interval="false" data-ride="carousel">
+                <div class="carousel-inner">
+                    {% for header in headers %}
+                        {% if forloop.counter == 1 %}
+                            <div class="carousel-item active">
+                        {% else %}
+                            <div class="carousel-item">
+                        {% endif %}
+                                <div class="carousel-title">
+                                    {{ header.description|safe }}
+                                </div>
+                                <img class="d-block w-100" src="uploaded/{{ header.file }}" alt="slide">
+                            </div>
+                    {% endfor %}
+                </div>
+            </div>
+            <div id="title-header">
+                <div class="title-header-buttons">
+                    {% if not user.is_authenticated %}
+                        <a class="btn btn-account btn-l js-scroll-trigger" href="/accounts/login/">Login</a>
+                        <a class="btn btn-account btn-l js-scroll-trigger" href="/accounts/signup/">Sign Up</a>
+                    {% else %}
+                        <a class="btn btn-account btn-l js-scroll-trigger" href="/map">OPEN MAP</a>
+                        <a class="btn btn-account btn-l js-scroll-trigger" href="/fish/upload">UPLOAD FISH DATA</a>
+                    {% endif %}
+                </div>
+            </div>
+        </header>
+
+        <section id="fish-data">
+            <div class="container" style="margin-bottom: 25px">
+                <div class="row" style="margin-bottom: 20px;">
+                    <div class="col-lg-8 mx-auto text-center">
+                        <h2 class="section-heading">BIODIVERSITY RECORDS</h2>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-lg-3 ml-auto text-center" id="total-fish">
+                        <div class="chart-icon-wrapper">
+                            <img src="{% static 'img/fish-2.svg' %}" class="fish-icon fish">
+                            <div class="module-info-wrapper">
+                                <span id="fish-total-records" class="total-data green">-</span>
+                                <span class="total-data-desc green">&nbsp;records</span><br/>
+                                <span id="fish-total-sites" class="total-data green">-</span>
+                                <span class="total-data-desc green">&nbsp;sites</span>
+                            </div>
+                            <span class="bullet"></span>
+                            <div class="donut-chart">
+                                <canvas id="chart-fish" width="250" height="250"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-3 text-center" id="total-invertebra">
+                        <div class="chart-icon-wrapper">
+                            <img src="{% static 'img/invertebras-2.svg' %}" class="fish-icon crab greyed-icon">
+                            <div class="module-info-wrapper">
+                                <span class="total-data-desc green">coming soon</span>
+                            </div>
+                            <span class="bullet"></span>
+                            <div class="donut-chart">
+                                <canvas id="chart-crab" width="170" height="170"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-3 mr-auto text-center" id="total-algae">
+                        <div class="chart-icon-wrapper">
+                            <img src="{% static 'img/algae-2.svg' %}" class="fish-icon algae greyed-icon">
+                            <div class="module-info-wrapper">
+                                <span class="total-data-desc green">coming soon</span>
+                            </div>
+                            <span class="bullet"></span>
+                            <div class="donut-chart">
+                                <canvas id="chart-algae" width="170" height="170"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </section>
+
+        <section id="partners-section">
+            <div class="container" style="margin-bottom: 25px">
+                <div class="row">
+                    <div class="col-lg-12 mx-auto text-center">
+                        <h2 class="section-partners-heading">PARTNERS</h2>
+                    </div>
+                    <div class="col-lg-12 row partner-icon-wrapper">
+                        <div class="col-lg-3 partner-icon">
+                            <img src="{% static 'img/albany-museum.jpg' %}">
+                        </div>
+                        <div class="col-lg-3 partner-icon">
+                            <img src="{% static 'img/south-african-national-parks.png' %}">
+                        </div>
+                        <div class="col-lg-3 partner-icon">
+                            <img src="{% static 'img/CapeNature.png' %}">
+                        </div>
+                        <div class="col-lg-3 partner-icon">
+                            <img src="{% static 'img/environmental_affairs_and_development_planning.png' %}">
+                        </div>
+                    </div>
+                    <div class="col-lg-12 row partner-icon-wrapper">
+                        <div class="col-lg-3 partner-icon">
+                            <img src="{% static 'img/South-African-Institute-for-Aquatic-Biodiversity.png' %}">
+                        </div>
+                        <div class="col-lg-3 partner-icon">
+                            <img src="{% static 'img/city-of-cape-town.png' %}">
+                        </div>
+                        <div class="col-lg-3 partner-icon">
+                            <img src="{% static 'img/south-african-national-biodiversity-institute.png' %}">
+                        </div>
+                        <div class="col-lg-3 partner-icon">
+                            <img src="{% static 'img/department-of-water-and-sanitation.png' %}">
+                        </div>
+                    </div>
+                    <div class="col-lg-12 row partner-icon-wrapper">
+                        <div class="col-lg-3 partner-icon">
+                            <img src="{% static 'img/saeon.jpg' %}">
+                        </div>
+                        <div class="col-lg-3 partner-icon">
+                            <img src="{% static 'img/devsbranch.png' %}">
+                        </div>
+                        <div class="col-lg-3 partner-icon">
+                            <img src="{% static 'img/endangered-wildlife-trust.png' %}">
+                        </div>
+                        <div class="col-lg-3 partner-icon">
+                            <img src="{% static 'img/wwf.jpg' %}">
+                        </div>
+                    </div>
+                </div>
+                <div class="row" style="margin-top: 50px">
+                    <div class="col-lg-12 mx-auto text-center">
+                        <h2 class="section-partners-heading">FUNDERS</h2>
+                    </div>
+                    <div class="col-lg-12 row partner-icon-wrapper">
+                        <div class="col-lg-3 partner-icon">
+
+                        </div>
+                        <div class="col-lg-3 partner-icon">
+                            <img src="{% static 'img/JRS-biodiversity.png' %}">
+                        </div>
+                        <div class="col-lg-3 partner-icon">
+                            <img src="{% static 'img/south-african-national-biodiversity-institute.png' %}">
+                        </div>
+                        <div class="col-lg-3 partner-icon">
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <div id="about">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-4 pull-left fbis-icon">
+                        <a href="#" class="pull-left">
+                            <img src="{% static 'img/fbis-text-2.png' %}" width="300px">
+                        </a>
+                    </div>
+                    <div class="col-lg-4 about-links">
+                        <p>
+                            <a href="#">Home</a> |
+                            <a href="/map">Map</a> |
+                            <a href="/links">External Resources</a> |
+                            <a href="/under-development">Documents & Reports</a> |
+                            <a href="/contact">Contact</a> |
+                            <a href="/bibliography">Bibliography</a> |
+                            <a href="/layers">GIS Catalogue</a>
+                        </p>
+                    </div>
+                    <div class="col-lg-4 pull-right">
+                        <a href="http://devsbranch.com/en/" class="pull-right">
+                            <img src="{% static 'img/devsbranch-logo.png' %}" width="90px">
+                        </a>
+                        <a class="pull-right" style="margin-right: 25px">
+                            <img src="{% static 'img/frc-logo.png' %}" height="75px">
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}
+
+{% block foot %}
+
+    <!-- Plugin JavaScript -->
+    <script src="{% static "js/libs/jquery/jquery-3.3.1.min.js" %}"></script>
+    <script src="{% static "js/libs/bootstrap-4.0.0/js/bootstrap.min.js" %}"></script>
+    <script src="{% static "js/libs/jquery-easing/jquery.easing.min.js" %}"></script>
+    <script src="{% static "js/libs/scrollreveal/scrollreveal.min.js" %}"></script>
+    <script src="{% static "js/libs/magnific-popup/jquery.magnific-popup.min.js" %}"></script>
+    <script src="{% static "js/libs/chart/Chart-2.7.2.js" %}"></script>
+
+    <!-- Custom scripts for this template -->
+    <script src="{% static "js/views/landing-page.js" %}"></script>
+{% endblock %}

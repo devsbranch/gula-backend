@@ -1,0 +1,247 @@
+#
+# Production server with UWSGI configured to run on port 8080
+# and web configured to run directly on port 80
+#
+# docker-compose build
+# docker-compose up -d web
+#
+# See accompanying Make commands for easy collectstatic etc.
+
+version: "3"
+services:
+
+  smtp:
+    # Note you cannot scale if you use container_name
+    container_name: gula-smtp
+    image: catatnight/postfix
+    hostname: postfix
+    environment:
+      # You could change this to something more suitable
+      - maildomain=devsbranch.com
+      - smtp_user=noreply:docker
+    restart: unless-stopped
+    networks:
+      - backend
+
+  db:
+    # Note you cannot scale if you use container_name
+    container_name: gula-db
+    image: kartoza/postgis:9.6-2.4
+    volumes:
+      #- ./pg/postgres_data:/var/lib/postgresql
+      - ./backups:/backups
+      - ./sql:/sql
+    environment:
+      - USERNAME=docker
+      - PASS=docker
+    restart: unless-stopped
+    networks:
+      backend:
+        aliases:
+            - db
+  #  Uncomment the next line to have an access with PGAdmin using localhost and port 25432 on your computer.
+  #  Only for development !
+  #  ports:
+  #    - "25432:5432"
+
+  uwsgi:
+    # Note you cannot scale if you use container_name
+    container_name: gula-uwsgi
+    build:
+      context: ./docker
+      dockerfile: Dockerfile
+    hostname: uwsgi
+    depends_on:
+      - elasticsearch
+    environment:
+      - DATABASE_NAME=gis
+      - DATABASE_USERNAME=docker
+      - DATABASE_PASSWORD=docker
+      - DATABASE_HOST=db
+      - DJANGO_SETTINGS_MODULE=core.settings.prod_docker
+      - VIRTUAL_HOST=gula.devsbranch.com
+      - VIRTUAL_PORT=8080
+      - RABBITMQ_HOST=rabbitmq
+      - HAYSTACK_HOST=elasticsearch
+    volumes:
+      - ../django_project:/home/web/django_project
+      - ./static:/home/web/static:rw
+      - ./media:/home/web/media:rw
+      - ./reports:/home/web/reports
+      - ./logs:/var/log/
+    restart: on-failure:5
+    user: root
+    networks:
+      backend:
+        aliases:
+          - uwsgi
+
+  dbbackups:
+    # Note you cannot scale if you use container_name
+    container_name: gula-db-backups
+    image: kartoza/pg-backup:9.4
+    hostname: pg-backups
+    volumes:
+      - ./backups:/backups
+    environment:
+      # take care to let the project name below match that
+      # declared in the top of the makefile
+      - DUMPPREFIX=PG_gula
+      # These are all defaults anyway, but setting explicitly in
+      # case we ever want to ever use different credentials
+      - PGUSER=docker
+      - PGPASSWORD=docker
+      - PGPORT=5432
+      - PGHOST=db
+      - PGDATABASE=gis
+    restart: unless-stopped
+    networks:
+      - backend
+
+  # This is normally the main entry point for a production server
+  web:
+    # Note you cannot scale if you use container_name
+    container_name: gula-web
+    image: nginx
+    hostname: nginx
+    depends_on:
+      - uwsgi
+      - db
+    volumes:
+      - ./sites-enabled:/etc/nginx/conf.d:ro
+      # I dont use volumes_from as I want to use the ro modifier
+      - ./static:/home/web/static:ro
+      - ./media:/home/web/media:ro
+      - ./logs:/var/log/nginx
+    ports:
+      - "65200:8080"
+    restart: unless-stopped
+    networks:
+      - backend
+
+  # This is the entry point for a development server.
+  # Run with --no-deps to run attached to the services
+  # from produ environment if wanted
+  devweb:
+    # Note you cannot scale if you use container_name
+    container_name: gula-dev-web
+    build:
+      context: ./docker
+      dockerfile: Dockerfile-dev
+    hostname: uwsgi
+    links:
+      - elasticsearch
+    depends_on:
+      - db
+    environment:
+      - DATABASE_NAME=gis
+      - DATABASE_USERNAME=docker
+      - DATABASE_PASSWORD=docker
+      - DATABASE_HOST=db
+      - DJANGO_SETTINGS_MODULE=core.settings.prod_docker
+      - PYTHONPATH=/home/web/django_project
+      - VIRTUAL_HOST=gula.devsbranch.com
+      - VIRTUAL_PORT=8080
+      - RABBITMQ_HOST=rabbitmq
+    volumes:
+      - ../django_project:/home/web/django_project
+      - ./static:/home/web/static
+      - ./media:/home/web/media
+      - ./reports:/home/web/reports
+      - ./logs:/var/log/
+    ports:
+      # for django test server
+      - "65302:8080"
+      # for ssh
+      - "65303:22"
+    networks:
+      - backend
+
+  btsync-db:
+    # BTSync backups for database dumps
+    image: kartoza/btsync
+    restart: unless-stopped
+    volumes:
+      # We mount RW so that we can use remove peer to clean up old backups off the server
+      - ./backups:/web:rw
+    env_file:
+      # The environment file should define two variables:
+      # SECRET: a RW btsync key if the server is a production server
+      #         a RO btsync key if it is staging or development machine
+      # DEVICE: a unique device name so you can recognise which host is being peered with in btsync
+      # See the btsync example env in this folder for a template
+      # NOTE:
+      # Do not version control the env file as anyone else could peer it and sync
+      # our database backups etc.
+      - btsync-db.env
+
+  btsync-media:
+    # BTSync backups for django media
+    image: kartoza/btsync
+    restart: unless-stopped
+    volumes:
+      # We mount RO as we do not really want peers to change this data
+      - ./media:/web:ro
+    env_file:
+      # The environment file should define two variables:
+      # SECRET: a RW btsync key if the server is a production server
+      #         a RO btsync key if it is staging or development machine
+      # DEVICE: a unique device name so you can recognise which host is being peered with in btsync
+      # See the btsync example env in this folder for a template
+      # NOTE:
+      # Do not version control the env file as anyone else could peer it and sync
+      # our media backups etc.
+      - btsync-media.env
+
+  rabbitmq:
+    image: library/rabbitmq
+    hostname: rabbitmq
+    environment:
+      - RABBIT_PASSWORD=rabbit_test_password
+      - USER=rabbit_user
+      - RABBITMQ_NODENAME=rabbit
+    restart: unless-stopped
+    networks:
+      - backend
+
+  worker:
+    build: docker
+    hostname: worker
+    command: celery worker -A base.celery -l info  --beat
+    environment:
+      - DATABASE_NAME=gis
+      - DATABASE_USERNAME=docker
+      - DATABASE_PASSWORD=docker
+      - DATABASE_HOST=db
+      - RABBITMQ_HOST=rabbitmq
+      - DJANGO_SETTINGS_MODULE=core.settings.prod_docker
+      - VIRTUAL_HOST=gula.devsbranch.com
+      - VIRTUAL_PORT=8080
+      - C_FORCE_ROOT=true
+    volumes:
+      - ../django_project:/home/web/django_project
+      - ./static:/home/web/static:rw
+      - ./media:/home/web/media:rw
+      - ./reports:/home/web/reports
+      - ./logs:/var/log/
+    restart: on-failure:5
+    networks:
+      - backend
+
+  elasticsearch:
+    # Note you cannot scale if you use conteiner_name
+    container_name: gula-elasticsearch
+    restart: on-failure:5
+    #  read_only: true
+    image: elasticsearch:2.4.2
+    hostname: elasticsearch
+    environment:
+      - cluster.name=docker-cluster
+      - bootstrap.memory_lock=true
+    networks:
+      backend:
+        aliases:
+            - elasticsearch
+
+networks:
+  backend:

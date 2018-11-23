@@ -1,0 +1,98 @@
+version: '2'
+services:
+
+  smtp:
+    image: catatnight/postfix
+    hostname: postfix
+    environment:
+      # You could change this to something more suitable
+      - maildomain=devsbranch.com
+      - smtp_user=noreply:docker
+    networks:
+      - backend
+
+  db:
+    image: devsbranch/geonode_db
+    volumes:
+      #- ./pg/postgres_data:/var/lib/postgresql
+      - db-backups:/backups
+      - db-sql:/sql
+    environment:
+      - USERNAME=docker
+      - PASS=docker
+    networks:
+      backend:
+        aliases:
+            - db
+
+  uwsgi:
+    image: sonlinux/docker-gula-uwsgi:latest
+    hostname: uwsgi
+    environment:
+      - DATABASE_NAME=gis
+      - DATABASE_USERNAME=docker
+      - DATABASE_PASSWORD=docker
+      - DATABASE_HOST=db
+      - DJANGO_SETTINGS_MODULE=core.settings.prod_docker
+      - VIRTUAL_HOST=gula.devsbranch.com
+      - VIRTUAL_PORT=8080
+      - RABBITMQ_HOST=rabbitmq
+    volumes:
+      - gula-static:/home/web/static:rw
+      - gula-media:/home/web/media:rw
+      - gula-reports:/home/web/reports
+      - gula-logs:/var/log/
+    user: root
+    networks:
+      backend:
+        aliases:
+          - uwsgi
+
+  dbbackups:
+    image: kartoza/geonode_db
+    hostname: pg-backups
+    volumes:
+      - db-backups:/backups
+    environment:
+      # take care to let the project name below match that
+      # declared in the top of the makefile
+      - DUMPPREFIX=PG_gula
+      # These are all defaults anyway, but setting explicitly in
+      # case we ever want to ever use different credentials
+      - PGUSER=docker
+      - PGPASSWORD=docker
+      - PGPORT=5432
+      - PGHOST=db
+      - PGDATABASE=gis
+    networks:
+      - backend
+
+  # This is normally the main entry point for a production server
+  web:
+    image: devsbranch/gula_nginx:latest
+    hostname: nginx
+    depends_on:
+      - uwsgi
+      - db
+    volumes:
+      # I dont use volumes_from as I want to use the ro modifier
+      - gula-static:/home/web/static:ro
+      - gula-media:/home/web/media:ro
+      - gula-logs:/var/log/nginx
+    ports:
+      - "80:8080"
+    networks:
+      - backend
+
+  rabbitmq:
+    image: library/rabbitmq
+    hostname: rabbitmq
+    environment:
+      - RABBIT_PASSWORD=rabbit_test_password
+      - USER=rabbit_user
+      - RABBITMQ_NODENAME=rabbit
+    networks:
+      - backend
+
+networks:
+  backend:

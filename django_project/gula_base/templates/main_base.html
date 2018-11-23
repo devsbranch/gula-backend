@@ -1,0 +1,48 @@
+{% load static from staticfiles %}
+{% load pipeline %}
+{% load grunt %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=0">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <title>{% block title %} {{ APPLICATION_NAME }} | {% block subtitle %}{% endblock %} {% endblock %}</title>
+
+    <link href="{% static "js/libs/bootstrap-4.0.0/css/bootstrap.min.css" %}" rel="stylesheet">
+    <link href="{% static "js/libs/font-awesome/css/font-awesome.min.css" %}" rel="stylesheet">
+    <link href="{% static "css/base.css" %}" rel="stylesheet">
+    <link href="{% static "css/navbar.css" %}" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Alegreya:400,400i,500,500i,700,700i|Roboto+Condensed:100,100i,300,300i,400,400i,500,500i,700,700i" rel="stylesheet">
+
+    <!-- Global Site Tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id={{ GOOGLE_ANALYTIC_KEY }}"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', '{{ GOOGLE_ANALYTIC_KEY }}');
+    </script>
+
+    {% block head %} {% endblock %}
+
+</head>
+<body id="page-top">
+
+    {% block navigation %}
+    <!-- Navigation -->
+    {% include 'navigation_bar.html' %}
+    {% endblock %}
+
+    {% block body_content %} {% endblock %}
+
+    <!-- Bootstrap core JavaScript -->
+
+    {% block foot %} {% endblock %}
+
+</body>
+
+
+</html>
