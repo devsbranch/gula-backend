@@ -23,6 +23,7 @@ urlpatterns = [
     url(r'^accounts/', include('allauth.urls')),
     url(r'^', include('gula_base.urls')),
     url(r'^api-auth/', include('rest_framework.urls')),
+    url(r'^api/', include('api.urls', namespace='api')),
 ]
 
 try:

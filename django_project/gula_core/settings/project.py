@@ -17,6 +17,7 @@ from .utils import absolute_path
 
 # Project apps
 INSTALLED_APPS += (
+    'api',
     'gula_base',
     # please add project specific apps here
 )
