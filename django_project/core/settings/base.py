@@ -57,13 +57,13 @@ STATIC_ROOT = '/home/web/static'
 STATIC_URL = '/static/'
 
 # Additional locations of static files
-STATICFILES_DIRS = (
+STATICFILES_DIRS = [
     # Put strings here, like "/home/html/static" or "C:/www/django/static".
     # Always use forward slashes, even on Windows.
     # Don't forget to use absolute paths, not relative paths.
     absolute_path('core', 'base_static'),
-    absolute_path('base', 'static'),
-)
+    absolute_path('gula_base', 'static'),
+]
 
 # List of finder classes that know how to find static files in
 # various locations.
@@ -99,7 +99,7 @@ TEMPLATES = [
         'DIRS': [
             # project level templates
             absolute_path('core', 'base_templates'),
-            absolute_path('base', 'templates'),
+            absolute_path('gula_base', 'templates'),
         ],
         'APP_DIRS': True,
         'OPTIONS': {

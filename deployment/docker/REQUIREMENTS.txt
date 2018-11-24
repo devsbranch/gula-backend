@@ -25,3 +25,4 @@ django-grappelli==2.11.1
 djangorestframework==3.7.7
 django-filter==1.1.0
 coreapi==2.3.3
+haystack

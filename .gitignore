@@ -18,7 +18,7 @@ private.py
 *.*~
 
 # project specifc
-django_project/gula_core/settings/secret.py
+django_project/core/settings/secret.py
 xmlrunner
 
 # Byte-compiled / optimized / DLL files
@@ -122,7 +122,7 @@ deployment/btsync-db.env
 deployment/btsync-db.env.PRODUCTION
 deployment/btsync-media.env.PRODUCTION
 .sync/
-# These don't get versioned since they are generated on the fly 
+# These don't get versioned since they are generated on the fly
 deployment/docker/Dockerfile-prod
 deployment/docker/projecta.tar.gz
 celerybeat-schedule
