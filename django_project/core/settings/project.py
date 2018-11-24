@@ -31,7 +31,7 @@ except ImportError:
 
 try:
     TEMPLATES[0]['DIRS'] = [
-        absolute_path('gula_core', 'base_templates'),
+        absolute_path('core', 'base_templates'),
         absolute_path('gula_base', 'templates'),
     ] + TEMPLATES[0]['DIRS']
 
@@ -44,7 +44,7 @@ except KeyError:
             'BACKEND': 'django.template.backends.django.DjangoTemplates',
             'DIRS': [
                 # project level templates
-                absolute_path('gula_core', 'base_templates'),
+                absolute_path('core', 'base_templates'),
                 absolute_path('gula_base', 'templates'),
             ],
             'APP_DIRS': True,
@@ -69,7 +69,7 @@ STATICFILES_DIRS = [
     # Put strings here, like "/home/html/static" or "C:/www/django/static".
     # Always use forward slashes, even on Windows.
     # Don't forget to use absolute paths, not relative paths.
-    absolute_path('gula_core', 'base_static'),
+    absolute_path('core', 'base_static'),
     absolute_path('gula_base', 'static'),
 ] + STATICFILES_DIRS
 

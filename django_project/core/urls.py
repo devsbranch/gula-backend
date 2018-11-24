@@ -17,13 +17,14 @@ from django.contrib import admin
 from django.conf import settings
 from django.conf.urls.static import static
 
+app_name = 'gula-backend'
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
     url(r'^grappelli/', include('grappelli.urls')),
     url(r'^accounts/', include('allauth.urls')),
     url(r'^', include('gula_base.urls')),
     url(r'^api-auth/', include('rest_framework.urls')),
-    url(r'^api/', include('api.urls', namespace='api')),
+    url(r'^api/', include('api.urls')),
 ]
 
 try:
