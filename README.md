@@ -28,13 +28,9 @@ Story queue on Waffle:
 
 [![Throughput Graph](https://graphs.waffle.io/devsbranch/gula-backend/throughput.svg)](https://waffle.io/devsbranch/gula-backend/metrics)
 
-* Current test status master: [![Build Status](https://travis-ci.org/inasafe/inasafe.svg?branch=master)](https://travis-ci.org/inasafe/inasafe) and
-[![Code Health](https://landscape.io/github/devsbranch/gula-backend/master/landscape.svg?style=flat)](https://landscape.io/github/devsbranch/gula-backend/master)
+* Current test status master: [![Build Status](https://travis-ci.org/inasafe/inasafe.svg?branch=master)](https://travis-ci.org/inasafe/inasafe)
 
-* Current test status develop: [![Build Status](https://travis-ci.org/inasafe/inasafe.svg?branch=develop)](https://travis-ci.org/inasafe/inasafe) and
-[![Code Health](https://landscape.io/github/devsbranch/gula-backend/develop/landscape.svg?style=flat)](https://landscape.io/github/devsbranch/gula-backend/develop)
-
-
+* Current test status develop: [![Build Status](https://travis-ci.org/inasafe/inasafe.svg?branch=develop)](https://travis-ci.org/inasafe/inasafe)
 
 
 ## Quick Installation Guide
