@@ -1,4 +1,4 @@
-# gula
+# gula-backend
 
 A django API module for showcasing client products and generating discount coupons on the selected ones.
 
